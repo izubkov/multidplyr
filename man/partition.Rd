@@ -37,5 +37,8 @@ summarise(planes, n())
 
 month <- partition(flights, month)
 month \%>\% group_by(day) \%>\% summarise(n())
+
+month <- partition(flights, month)
+month \%>\% arrange(day, .by_group = T) \%>\% distinct(day) \%>\% collect()
 }
 }
