@@ -21,6 +21,8 @@
 #'
 #' month <- partition(flights, month)
 #' month %>% group_by(day) %>% summarise(n())
+#'
+#' month %>% arrange(day, .by_group = T) %>% collect()
 #' }
 partition <- function(.data, ..., cluster = get_default_cluster()) {
   dots <- lazyeval::lazy_dots(...)
@@ -198,6 +200,13 @@ mutate_.party_df <- function(.data, ..., .dots = list()) {
 #' @export
 filter_.party_df <- function(.data, ..., .dots = list()) {
   shard_call(.data, quote(dplyr::filter), ..., .dots = .dots)
+}
+
+#' @importFrom dplyr arrange_
+#' @method arrange_ party_df
+#' @export
+arrange_.party_df <- function(.data, ..., .dots = list()) {
+  shard_call(.data, quote(dplyr::arrange), ..., .dots = .dots)
 }
 
 #' @importFrom dplyr summarise_
